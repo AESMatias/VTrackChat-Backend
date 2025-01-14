@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User, {SubscriptionPlan} from './models/User';
+import User from './models/User';
 import { config } from '../config';
 
 export const register = async (req: Request, res: Response): Promise<void> => {
@@ -22,14 +22,11 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-    const currentPlan = req.body.currentPlan || SubscriptionPlan.Normal;
-
     // Create a new user with the default profile data
     const newUser = new User({
       email,
       password: hashedPassword,
       username: email, // Username is set to email by default
-      currentPlan: 0, // Default to Normal plan
       tokens: 100,
       loggedIn: false,
     });
@@ -47,7 +44,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       message: 'User registered successfully',
       user: {
         username: newUser.username,
-        currentPlan: newUser.currentPlan,
         tokens: newUser.tokens,
         loggedIn: newUser.loggedIn
       },
@@ -84,7 +80,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       token,
       user: {
         username: user.username,
-        currentPlan: user.currentPlan,
         tokens: user.tokens,
         loggedIn: true
       },
