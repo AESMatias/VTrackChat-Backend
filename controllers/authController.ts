@@ -29,9 +29,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       password: hashedPassword,
       username: email, // Username is set to email by default
       currentPlan: 0, // Default to Normal plan
-      tokens: 100, // Default tokens
-      loggedIn: false, // Default to logged out
-      speechRecordingStatus: 0, // Default to Inactive
+      tokens: 100,
+      loggedIn: false,
     });
 
     // Save the new user to the database
@@ -49,8 +48,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         username: newUser.username,
         currentPlan: newUser.currentPlan,
         tokens: newUser.tokens,
-        loggedIn: newUser.loggedIn,
-        speechRecordingStatus: newUser.speechRecordingStatus,
+        loggedIn: newUser.loggedIn
       },
       token,
     });
@@ -58,7 +56,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ error: 'Failed to register user', details: error });
   }
 };
-
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
@@ -88,8 +85,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         username: user.username,
         currentPlan: user.currentPlan,
         tokens: user.tokens,
-        loggedIn: true,  // Set to true upon successful login
-        speechRecordingStatus: user.speechRecordingStatus,
+        loggedIn: true
       },
     });
   } catch (error) {

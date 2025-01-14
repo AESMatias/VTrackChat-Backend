@@ -19,7 +19,6 @@ export interface IUser extends Document {
   currentPlan: SubscriptionPlan;
   tokens: number;
   loggedIn: boolean;
-  speechRecordingStatus: SpeechRecordingStatus;
 }
 
 const userSchema = new Schema<IUser>({
@@ -51,11 +50,6 @@ const userSchema = new Schema<IUser>({
   loggedIn: {
     type: Boolean,
     default: false, // Default to not logged in
-  },
-  speechRecordingStatus: {
-    type: Number,
-    enum: Object.values(SpeechRecordingStatus),
-    default: SpeechRecordingStatus.Inactive, // Default to Inactive
   },
 });
 
