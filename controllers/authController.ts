@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User from './models/User'; // Import your User model
+import User, {SubscriptionPlan} from './models/User';
 import { config } from '../config';
 
 export const register = async (req: Request, res: Response): Promise<void> => {
@@ -22,6 +22,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+    const currentPlan = req.body.currentPlan || SubscriptionPlan.Normal;
 
     // Create a new user with the default profile data
     const newUser = new User({
