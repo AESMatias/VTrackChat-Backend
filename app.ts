@@ -15,6 +15,9 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(bodyParser.json());
 
+const cors = require('cors');
+app.use(cors({ origin: '*' }));
+
 // Routes
 app.use('/auth', authRoutes);
 app.use('/openai', openaiRoutes);
