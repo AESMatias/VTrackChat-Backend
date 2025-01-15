@@ -25,7 +25,7 @@ export const queryOpenAI = async (req: Request, res: Response): Promise<void> =>
         res.status(400).json({ error: 'Prompt is required' });
         return;
     }
-    
+    console.error('req completo:', req.body);
     logger.info(`Querying OpenAI with prompt: ${req.body}`);
 
     try {
