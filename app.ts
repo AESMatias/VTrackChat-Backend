@@ -18,6 +18,7 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 
 const cors = require('cors');
+app.use(express.json());
 app.use(cors({ origin: '*' }));
 
 // Middleware to log all incoming requests
