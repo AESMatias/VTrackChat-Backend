@@ -18,18 +18,20 @@ export const queryOpenAI = async (req: Request, res: Response): Promise<void> =>
           role: "user",
           content: `${prompt}`
       }];
-    return;
     }
+
+      messages = messages.map(message => ({
+        role: "user", // TODO: Not always user, sometimes assistant, sometimes system, FIX THIS!
+        content: `${prompt}`,
+    }));
 
     if (!prompt) {
         res.status(400).json({ error: 'Prompt is required' });
         return;
     }
     
-    console.log('req completo:', req.body)
-
-    
-
+    console.error('req completo:', req.body)
+    console.error('messags', messages)
 
     try {
 
