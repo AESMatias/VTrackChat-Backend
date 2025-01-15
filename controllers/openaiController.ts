@@ -20,11 +20,6 @@ export const queryOpenAI = async (req: Request, res: Response): Promise<void> =>
       }];
     }
 
-      messages = messages.map(message => ({
-        role: "user", // TODO: Not always user, sometimes assistant, sometimes system, FIX THIS!
-        content: `${prompt}`,
-    }));
-
     if (!prompt) {
         res.status(400).json({ error: 'Prompt is required' });
         return;
@@ -44,18 +39,18 @@ export const queryOpenAI = async (req: Request, res: Response): Promise<void> =>
 
         for (let i=0; i<messages.length; i++){
 
-            const actualQuery = messages[i].query;
-            const actualResponse = messages[i].response;
+            // const actualQuery = messages[i].query;
+            // const actualResponse = messages[i].response;
 
             lastFourMessages.push({
                 role: "user",
-                content: `${actualQuery}`
+                content: `${messages[i].content}`
             });
 
-            lastFourMessages.push({
-                role: "assistant",
-                content: `${actualResponse}`
-            });
+            // lastFourMessages.push({
+            //     role: "assistant",
+            //     content: `${actualResponse}`
+            // });
         }
 
         messages = [
