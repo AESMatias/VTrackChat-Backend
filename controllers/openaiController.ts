@@ -9,10 +9,15 @@ const modelName = "gpt-4o-mini";
 const client = new OpenAI({apiKey});
 
 export const queryOpenAI = async (req: Request, res: Response): Promise<void> => {
-  const { prompt, messages } = req.body;
+  let { prompt, messages } = req.body;
 
     if (!messages || !Array.isArray(messages)) {
-    res.status(400).json({ error: 'Messages array is required' });
+    // res.status(400).json({ error: 'Messages array is required' });
+    messages = [
+      {
+          role: "user",
+          content: `${prompt}`
+      }];
     return;
     }
 
@@ -20,10 +25,46 @@ export const queryOpenAI = async (req: Request, res: Response): Promise<void> =>
         res.status(400).json({ error: 'Prompt is required' });
         return;
     }
-    console.log('Prompt:', prompt)
-    console.log('Messages:', messages)
+    
     console.log('req completo:', req.body)
+
+    
+
+
     try {
+
+        //If the user is premium, then the last four messages are saved so he can have a better context
+        const lastFourMessages = [];
+        //If the messages are more than 4, then the last four messages are saved
+        if (messages.length > 4){
+            messages = messages.slice(messages.length-4, messages.length);
+        }
+
+        for (let i=0; i<messages.length; i++){
+
+            const actualQuery = messages[i].query;
+            const actualResponse = messages[i].response;
+
+            lastFourMessages.push({
+                role: "user",
+                content: `${actualQuery}`
+            });
+
+            lastFourMessages.push({
+                role: "assistant",
+                content: `${actualResponse}`
+            });
+        }
+
+        messages = [
+            {
+                role: "user",
+                content: `${prompt}`
+            },
+            ...lastFourMessages
+        ]
+
+
     const response = await client.chat.completions.create({
         messages: [
                 {
@@ -43,7 +84,7 @@ export const queryOpenAI = async (req: Request, res: Response): Promise<void> =>
     res.json({ result: response});
 
   } catch (error) {
-    console.log('Error at queryOpenAI:', error)
+    console.error('Error at queryOpenAI:', error)
     res.status(500).json({ error: 'Error communicating with OpenAI' });
   }
 };
