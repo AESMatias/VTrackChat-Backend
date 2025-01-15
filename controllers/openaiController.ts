@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { config } from '../config';
 import { OpenAI } from 'openai';
+import logger from '../logger';
 
 require('dotenv').config();
 
@@ -25,8 +26,7 @@ export const queryOpenAI = async (req: Request, res: Response): Promise<void> =>
         return;
     }
     
-    console.error('req completo:', req.body)
-    console.error('messags', messages)
+    logger.info(`Querying OpenAI with prompt: ${req.body}`);
 
     try {
 
@@ -82,6 +82,7 @@ export const queryOpenAI = async (req: Request, res: Response): Promise<void> =>
 
   } catch (error) {
     console.error('Error at queryOpenAI:', error)
+    logger.error(`Error: ${error.message}, Path: ${req.path}, Stack: ${error.stack}`);
     res.status(500).json({ error: 'Error communicating with OpenAI' });
   }
 };
