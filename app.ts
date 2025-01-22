@@ -5,6 +5,7 @@ import authRoutes from './routes/authRoutes';
 import openaiRoutes from './routes/openaiRoutes';
 import connectDB from './db';
 import logger from './logger';
+import { limitMiddlewareIP } from './middleware/rateLimiterIPMiddleware';
 
 
 dotenv.config();
@@ -14,16 +15,16 @@ connectDB();
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(bodyParser.json());
-
 const cors = require('cors');
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 
+// Apply rate limiting to all incoming requests, so that no single IP can make an excessive number of requests.
+app.use(limitMiddlewareIP); 
+
 // Middleware to log all incoming requests
 app.use((req, res, next) => {
-  logger.info(`Incoming Request: ${req.method} ${req.url}`);
+  logger.info(`Incoming Request: ${req.method} ${req.url} from the IP ${req.ip}`);
   next();
 });
 
