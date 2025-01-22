@@ -14,7 +14,7 @@ const logger = createLogger({
     new DailyRotateFile({
       filename: 'logs/%DATE%-combined.log',
       datePattern: 'YYYY-MM-DD',
-      maxFiles: '14d' // Mantener logs por 14 días
+      maxFiles: '14d' // Keep logs for 14 days
     }),
     new DailyRotateFile({
       filename: 'logs/%DATE%-error.log',

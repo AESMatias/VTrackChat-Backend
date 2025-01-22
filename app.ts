@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes';
 import openaiRoutes from './routes/openaiRoutes';
+import applicationRoutes from './routes/applicationRoutes';
 import connectDB from './db';
 import logger from './logger';
 import { limitMiddlewareIP } from './middleware/rateLimiterIPMiddleware';
@@ -32,6 +33,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/auth', authRoutes);
 app.use('/openai', openaiRoutes);
+app.use('/VTrackApp', applicationRoutes);
 
 // Error handling middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
