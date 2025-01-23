@@ -12,6 +12,8 @@ export interface IUser extends Document {
   username: string;
   tokens: number;
   loggedIn: boolean;
+  speechLanguage: string;
+  profilePictureURL: string;
 }
 
 const userSchema = new Schema<IUser>({
@@ -38,6 +40,14 @@ const userSchema = new Schema<IUser>({
   loggedIn: {
     type: Boolean,
     default: false, // Default to not logged in
+  },
+  speechLanguage: {
+    type: String,
+    default: 'en', // Default to English
+  },
+  profilePictureURL: {
+    type: String,
+    default: 'https://avatars.githubusercontent.com/u/119653204?v=4', // Default profile picture
   },
 });
 

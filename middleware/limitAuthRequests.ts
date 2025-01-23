@@ -3,7 +3,7 @@ import { RateLimiterMemory } from "rate-limiter-flexible";
 
 
 const rateLimiterAuth = new RateLimiterMemory({
-    points: 50, // Allow n request
+    points: 1, // Allow n request
     duration: 1, // Every x seconds
 });
 

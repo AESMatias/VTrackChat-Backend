@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from './models/User';
 import { config } from '../config';
+import { profile } from 'winston';
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
@@ -29,6 +30,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       username: email, // Username is set to email by default
       tokens: 100,
       loggedIn: false,
+      speechLanguage: 'en',
+      profilePictureURL: 'https://avatars.githubusercontent.com/u/119653204?v=4',
     });
 
     // Save the new user to the database
@@ -45,7 +48,9 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       user: {
         username: newUser.username,
         tokens: newUser.tokens,
-        loggedIn: newUser.loggedIn
+        loggedIn: newUser.loggedIn,
+        speechLanguage: newUser.speechLanguage,
+        profilePictureURL: newUser.profilePictureURL,
       },
       token,
     });
@@ -81,7 +86,9 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       user: {
         username: user.username,
         tokens: user.tokens,
-        loggedIn: true
+        loggedIn: true,
+        speechLanguage: user.speechLanguage,
+        profilePictureURL: user.profilePictureURL,
       },
     });
   } catch (error) {
