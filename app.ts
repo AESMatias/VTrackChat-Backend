@@ -20,6 +20,9 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 
+// Allow forwarding from Nginx internal proxy to Express
+app.set('trust proxy', true);
+
 // Apply rate limiting to all incoming requests, so that no single IP can make an excessive number of requests.
 app.use(limitMiddlewareIP); 
 
